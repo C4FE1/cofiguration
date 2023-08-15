@@ -16,6 +16,7 @@
       "nvidia-x11"
       "nvidia-settings"
       "nvidia-persistenced"
+      "epson_201207w"
     ];
   # Use the systemd-boot EFI boot loader.
   #boot.loader.systemd-boot.enable = true;
@@ -94,7 +95,7 @@
     };
   };
   # Enable CUPS to print documents.
-  # services.printing.enable = true;
+  services.printing.enable = true;
 
   # Enable sound.
   sound.enable = true;
@@ -115,10 +116,12 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "video" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
+      # Usuario
       firefox
       unzip
-      #cinnamon.nemo-with-extensions
+      epson_201207w
       xfce.thunar
+      sxiv
     ];
   };
     
@@ -129,10 +132,6 @@
   # $ nix search wget
   environment = { 
     systemPackages = with pkgs; [
-      #Usuario     
-      #nemo
-
- 
       # Sistema
       hyprland
       git
