@@ -90,7 +90,7 @@
       driSupport32Bit = true;
     };
     nvidia = {
-      # Os compositors do wayland precisam disso ^õ.o^
+      # Os compositors do wayland precisam disso ^o.o^
       modesetting.enable = true;
       # Bloqueia os drivers de codigo aberto
       open = false;
@@ -98,8 +98,12 @@
       nvidiaSettings = true;
     };
   };
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
+
+  # habilita os flatpaks
+  #services.flatpak.enable = true;  
 
   # Enable sound.
   sound.enable = true;
@@ -126,6 +130,8 @@
       epson_201207w
       xfce.thunar
       sxiv
+      gimp
+      heroic
     ];
   };
     
@@ -138,6 +144,7 @@
     systemPackages = with pkgs; [
       # Sistema
       hyprland
+      pywal
       git
       waybar
       neofetch
@@ -169,12 +176,6 @@
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
