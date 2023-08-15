@@ -64,14 +64,18 @@
     nvidiaPatches = true;
     xwayland.enable = true;
   };
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
   
-  # Diz ao Xorg pra usar o driver da nvidia (tambem é valido pra wayland)
-  services.xserver.videoDrivers = ["nvidia"];
-  
-  # habilita o display manager (SDDM)
-  services.xserver.displayManager.sddm.enable = true;
+  # servicos do X11
+  services = {
+    xserver ={
+      # habilita o X11 
+      enable = true;
+      # Diz ao Xorg pra usar o driver da nvidia (tambem é valido pra wayland)
+      videoDrivers = ["nvidia"];
+      # habilita o sevico do displaymanager (SDDM)
+      displayManager.sddm.enable = true;
+    };
+  };
   
   # Configure keymap in X11
   # services.xserver.layout = "us";
