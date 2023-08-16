@@ -9,6 +9,11 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
+ 
+
+  # habilita o nix flakes
+  nix.settings.experimental-features = ["nix-command" "flakes"];
+ 
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       # adicione o nome do pacote de codigo fechado aqui >:)
@@ -17,7 +22,11 @@
       "nvidia-settings"
       "nvidia-persistenced"
       "epson_201207w"
+      "steam"
+      "steam-original"
+      "steam-run"
     ];
+
   # Use the systemd-boot EFI boot loader.
   #boot.loader.systemd-boot.enable = true;
   #boot.loader.efi.canTouchEfiVariables = true;
@@ -138,11 +147,20 @@
   # Security
   security.sudo.wheelNeedsPassword = false;
 
+  # Steam
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment = { 
     systemPackages = with pkgs; [
       # Sistema
+      killall
+      htop
       hyprland
       pywal
       git
