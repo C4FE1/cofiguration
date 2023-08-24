@@ -22,6 +22,7 @@
       "nvidia-settings"
       "nvidia-persistenced"
       "epson_201207w"
+      "discord"
       "steam"
       "steam-original"
       "steam-run"
@@ -33,6 +34,10 @@
 
   # GRUB
   boot = {
+    # habilita o intel vt-d ou intel vt-x
+    # kernelParams = [ "intel_iommu=on" ];
+    # habilita esses modulos
+    # kernelModules = [ "vfio" "vfio_iommu_type1" "vfio_pci" "vfio_virqfd" ];
     loader = {
       efi = {
        canTouchEfiVariables = true;
@@ -47,7 +52,7 @@
     };
   };
 
-  networking.hostName = "Nyx_os"; # Define your hostname.
+  networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
@@ -77,6 +82,8 @@
   # servicos do X11
   services = {
     xserver ={
+      # Diz ao Xorg pra usar o teclado br
+      layout = "br";
       # habilita o X11 
       enable = true;
       # Diz ao Xorg pra usar o driver da nvidia (tambem é valido pra wayland)
@@ -107,12 +114,12 @@
       nvidiaSettings = true;
     };
   };
-
+  
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
   # habilita os flatpaks
-  #services.flatpak.enable = true;  
+  services.flatpak.enable = true;  
 
   # Enable sound.
   sound.enable = true;
@@ -128,6 +135,9 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  # adiciona o usuario ao grupo  libvirtd
+  users.groups.libvirtd.members = [ "root" "kohi"];
+ 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.kohi = {
     isNormalUser = true;
@@ -137,15 +147,34 @@
       firefox
       unzip
       epson_201207w
-      xfce.thunar
+      # xfce.thunar
+      pcmanfm
+      discord
       sxiv
       gimp
       heroic
+      sonobus
+      ranger
+      emacs
+      lolcat
+      gnumake
+      libgccjit
+      binutils
+      virt-manager
+      qemu
+      # OVMF
+      # pciutils
     ];
   };
     
   # Security
   security.sudo.wheelNeedsPassword = false;
+
+  # virt-manager
+  # habilita o libvirtd 
+  virtualisation.libvirtd.enable = true;
+  # habilita o dconf
+  programs.dconf.enable = true;
 
   # Steam
   programs.steam = {
@@ -159,12 +188,16 @@
   environment = { 
     systemPackages = with pkgs; [
       # Sistema
+      # udev
       killall
       htop
       hyprland
       pywal
       git
-      waybar
+      home-manager
+      (waybar.overrideAttrs (oldAttrs: {
+          mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
+      }))
       neofetch
       swww
       kitty
@@ -180,6 +213,19 @@
       # Resolve o problema da tela preta em aplicações electron
       NIXOS_OZONE_WL = "1";
     };
+  };
+
+  # Firewall
+  
+  # habilita o Nftables
+  #config.networking.nftables.enable = true;
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 80 443 ];
+    allowedUDPPortRanges = [
+      { from = 4000; to = 4007; }
+      { from = 8000; to = 8010; }
+    ];
   };
 
   # Some programs need SUID wrappers, can be configured further or are
