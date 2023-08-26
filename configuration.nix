@@ -147,6 +147,7 @@
       firefox
       unzip
       epson_201207w
+      skanlite
       # xfce.thunar
       pcmanfm
       discord
